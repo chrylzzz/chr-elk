@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chryl.mapper.ChrEmpMapper">
+
+    <resultMap id="chr_emp_map" type="com.chryl.entity.ChrEmp" autoMapping="true">
+        <id column="emp_id" property="empId" jdbcType="BIGINT"/>
+        <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+        <result column="emp_sal" property="empSal" jdbcType="DECIMAL"/>
+        <!--<result column="emp_date" property="empDate" jdbcType="DATE"/>-->
+        <result column="company_id" property="companyId" jdbcType="BIGINT"/>
+        <result column="emp_idcard" property="empIdcard" jdbcType="BIGINT"/>
+        <result column="emp_code" property="empCode" jdbcType="INTEGER"/>
+        <result column="emp_str_date" property="empStrDate" jdbcType="VARCHAR"/>
+        <result column="emp_real_name" property="empRealName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectEmpAll" resultMap="chr_emp_map">
+        SELECT  * FROM  chr_emp
+    </select>
+
+</mapper>

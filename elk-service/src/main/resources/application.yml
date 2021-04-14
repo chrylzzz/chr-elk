@@ -1,0 +1,8 @@
+server:
+  port: 8081
+# 扫描 mapper.xml
+mybatis:
+  mapper-locations:
+    - classpath:dao/*.xml
+    - classpath:mappers/*.xml
+    - classpath*:com/**/mapper/*.xml

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chryl.mapper.ChrCompanyMapper">
+
+    <resultMap id="chr_company_map" type="com.chryl.entity.ChrCompany" autoMapping="true">
+        <id column="company_id" property="companyId" jdbcType="BIGINT"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_code" property="companyCode" jdbcType="INTEGER"/>
+        <result column="company_description" property="companyDescription" jdbcType="VARCHAR"/>
+        <result column="company_chinese" property="companyChinese" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectCompanyAll" resultMap="chr_company_map">
+        SELECT  * FROM  chr_company
+    </select>
+</mapper>
