@@ -1,0 +1,93 @@
+
+## 1 ############################
+安装 elk:
+docker pull elasticsearch:6.4.0
+docker pull logstash:6.4.0
+docker pull kibana:6.4.0
+
+
+## 2 ############################
+创建一个存放logstash配置的目录并上传配置文件,logstash-springboot.conf文件内容
+input {
+  tcp {
+    mode => "server"
+    host => "0.0.0.0"
+    port => 4560
+    codec => json_lines
+  }
+}
+output {
+  elasticsearch {
+    hosts => "es:9200"
+    index => "springboot-logstash-%{+YYYY.MM.dd}"
+  }
+}
+
+
+## 4 ############################
+
+创建配置文件存放目录并上传配置文件到该目录
+mkdir /mydata/logstash
+
+
+## 5 ############################
+使用docker-compose.yml脚本启动ELK服务,docker-compose.yml内容
+
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:6.4.0
+    container_name: elasticsearch
+    environment:
+      - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
+      - "discovery.type=single-node" #以单一节点模式启动
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小
+    volumes:
+      - /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins #插件文件挂载
+      - /mydata/elasticsearch/data:/usr/share/elasticsearch/data #数据文件挂载
+    ports:
+      - 9200:9200
+      - 9300:9300
+  kibana:
+    image: kibana:6.4.0
+    container_name: kibana
+    links:
+      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+    depends_on:
+      - elasticsearch #kibana在elasticsearch启动之后再启动
+    environment:
+      - "elasticsearch.hosts=http://es:9200" #设置访问elasticsearch的地址
+    ports:
+      - 5601:5601
+  logstash:
+    image: logstash:6.4.0
+    container_name: logstash
+    volumes:
+      - /mydata/logstash/logstash-springboot.conf:/usr/share/logstash/pipeline/logstash.conf #挂载logstash的配置文件
+    depends_on:
+      - elasticsearch #kibana在elasticsearch启动之后再启动
+    links:
+      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+    ports:
+      - 4560:4560
+
+## 6 ############################
+上传到linux服务器并使用docker-compose命令运行
+docker-compose up -d
+
+
+## 7 ############################
+# 进入logstash容器
+docker exec -it logstash /bin/bash
+# 进入bin目录
+cd /bin/
+# 安装插件
+logstash-plugin install logstash-codec-json_lines
+# 退出容器
+exit
+# 重启logstash服务
+docker restart logstash
+
+## 8 ############################
+开启防火墙并在kibana中查看
+systemctl stop firewalld

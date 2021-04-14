@@ -11,10 +11,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ServiceController {
 
-    @GetMapping("/elk_show")
-    public Object show() {
 
-        int i = 1 / 0;
-        return "success";
-    }
 }

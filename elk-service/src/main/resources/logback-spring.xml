@@ -3,10 +3,14 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
     <!--应用名称-->
-    <property name="APP_NAME" value="mall-admin"/>
+    <!--<property name="APP_NAME" value="mall-admin"/>-->
+    <property name="APP_NAME" value="chr-elk"/>
     <!--日志文件保存路径-->
-    <property name="LOG_FILE_PATH" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/logs}"/>
+    <!--<property name="LOG_FILE_PATH" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/logs}"/>-->
+    <property name="LOG_FILE_PATH" value="/Users/chryl/logs/chr-elk/"/>
+
     <contextName>${APP_NAME}</contextName>
     <!--每天记录日志到文件appender-->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
